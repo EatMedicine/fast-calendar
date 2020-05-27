@@ -43,7 +43,7 @@ module.exports = {
     // assetsSubDirectory: 'static',
     devServer: {
         port: 8999,
-        host: 'localhost',
+        host: '0.0.0.0',
         https: false,
         open: true,
         proxy:{

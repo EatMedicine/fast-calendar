@@ -20,10 +20,10 @@
 </head>
 
 <body>
-    <div id="app" v-cloak>
+    <div id="app" v-cloak >
         <!-- 内容 -->
         <schedule-calendar :events="events"  @event-click="onEventClick" @date-click="onDateClick" 
-                            @event-dragend="changeDate"></schedule-calendar>
+                            @event-dragend="changeDate" @dblclick="console.log('2333')"></schedule-calendar>
     </div>
 </body>
 
