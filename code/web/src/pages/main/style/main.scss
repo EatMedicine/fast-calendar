@@ -1,0 +1,65 @@
+@import "./../../../style/color.scss";
+$head-height:80px;
+$aside-width:200px;
+$footer-height:20px;
+#app{
+    // display: block;
+    height: 100%;
+    position: relative;
+}
+#main-container{
+    // height:100%;
+    overflow: hidden;
+}
+#title{
+    background: #FFA500;
+    height:$head-height;
+    // margin-left: 20px;
+    line-height: $head-height;
+    width: 100%;
+    span{
+        vertical-align: middle;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+    }
+}
+#center{
+    position: absolute;
+    width: 100%;
+    top:$head-height;
+    left: 0;
+    bottom: 0;
+}
+#aside{
+    margin-right: -100%;
+    width: $aside-width;
+    height: 100%;
+    float: left;
+    background-color:white;
+    // overflow-y: auto;
+    // overflow: hidden;
+}
+#main{
+    // margin-left: $aside-width;
+    width: 100%;
+    height:100%;
+    float: left;
+}
+#content{
+    margin:0 0 0 $aside-width;
+    height:100%;
+    overflow-x:hidden;
+    overflow-y: auto;
+}
+#footer{
+    height:$footer-height;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    clear:both;
+}
+#aside .el-scrollbar__wrap{
+    overflow: scroll;
+    overflow-x:hidden;
+}

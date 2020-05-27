@@ -1,0 +1,30 @@
+<!--
+ * @Descripttion: 
+ * @Author: CY
+ * @Date: 2020-05-27 18:04:33
+ * @LastEditTime: 2020-05-27 19:24:51
+--> 
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <!-- 内容 -->
+        <schedule-calendar :events="events"  @event-click="onEventClick" @date-click="onDateClick" 
+                            @event-dragend="changeDate"></schedule-calendar>
+    </div>
+</body>
+
+</html>
