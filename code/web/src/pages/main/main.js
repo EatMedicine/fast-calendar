@@ -276,7 +276,10 @@ var vm = new Vue({
             window.location.href = "login"
         }
         this.refreshData();
-
+        setInterval(()=>{
+            this.refreshData();
+            console.log("Refresh");
+        },1000*30)
         console.log("isMobile",isMobile);
     }
 });
