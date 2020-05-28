@@ -2,13 +2,15 @@
  * @Descripttion: 
  * @Author: CY
  * @Date: 2020-05-27 18:02:53
- * @LastEditTime: 2020-05-27 19:10:42
+ * @LastEditTime: 2020-05-28 15:02:00
  */ 
 let glob = require('glob');
 const webpack = require('webpack');
+let urlConfig = require('./public/static/config.js')
+// import {apiUrl} from './public/static/config.js';
+console.log("apiUrl",urlConfig);
 
-
-let server = "http://localhost:53581";
+let server = urlConfig.apiUrl;
 //配置pages多页面获取当前文件夹下的html和js
 function getEntry(globPath, defaultName) {
     let entries = {},
@@ -46,6 +48,7 @@ module.exports = {
         host: '0.0.0.0',
         https: false,
         open: true,
+        disableHostCheck: true,
         proxy:{
             '/api/':{
                 target:server,

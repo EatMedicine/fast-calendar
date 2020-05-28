@@ -29,6 +29,7 @@ GO
 CREATE TABLE Tip
 (
 	id INT PRIMARY KEY IDENTITY(1, 1),
+	userId INT FOREIGN KEY REFERENCES UserLogin(id),
 	Title Text Not Null,--TipÄÚÈÝ
 	TipStatus INT Not Null,--×´Ì¬
 	IsShow INT Not Null,--ÊÇ·ñÏÔÊ¾

@@ -26,13 +26,14 @@ namespace fast_calendar_background.Controllers
         [ResponseType(typeof(Tip))]
         public IHttpActionResult GetTip(int id)
         {
-            Tip tip = db.Tip.Find(id);
-            if (tip == null)
+            UserLogin user = db.UserLogin.Find(id);
+            if (user == null)
             {
                 return NotFound();
             }
+            var tips = db.Tip.Where(item => item.userId == id);
 
-            return Ok(tip);
+            return Ok(tips);
         }
 
         // PUT: api/Tips/5
@@ -97,6 +98,22 @@ namespace fast_calendar_background.Controllers
             var dbResult = db.Tip.AddRange(tips);
             db.SaveChanges();
             return Ok(dbResult);
+        }
+        
+        // Put: api/Tips/disable
+        [ResponseType(typeof(Tip))]
+        [Route("api/Tips/disable")]
+        [HttpPut]
+        public IHttpActionResult disable(Tip tipObj)
+        {
+            Tip tip = db.Tip.Find(tipObj.id);
+            if (tip == null)
+            {
+                return NotFound();
+            }
+            tip.IsDisable = 1;
+            db.SaveChanges();
+            return Ok(tip);
         }
 
         // DELETE: api/Tips/5

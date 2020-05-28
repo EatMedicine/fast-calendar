@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .login_reg_dialog {
+            margin: 10px;
+            height: 400px
+        }
+
+        .login_forget_dialog {
+            margin: 10px;
+            height: 100px
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <div id="name">
+            <span>{{name}}</span>
+        </div>
+        <div id="login">
+            <el-card shadow="always" id="login-card">
+                <p style="text-align: center;font-size: 30px;">登录</p>
+                <el-form size="small" :model="loginForm" ref="login" label-width="80px"
+                    style="margin:5px auto;width: 400px;" :rules="rules" :inline-message="true">
+                    <el-form-item label="用户名" prop="username">
+                        <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
+                        <!-- <el-button type="text" style="float: right" @click="handleRegister">没有账号?注册</el-button> -->
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password" style="margin-top: 5px;">
+                        <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
+                        <!-- <el-button type="text" style="float: right" @click="handleForget">忘记密码</el-button> -->
+                    </el-form-item>
+                </el-form>
+                <div class="form-submit">
+                    <el-button type="primary" size="mini" style="display: inline-block" @click="handleLoginBtnClick">登录
+                    </el-button>
+                </div>
+            </el-card>
+        </div>
+        <el-dialog title="注册" width="600px" :visible.sync="isRegDialogVisible" :close-on-click-modal="false"
+            @closed="handleRegDialogClosed" center>
+            <div class="login_reg_dialog">
+                <el-form :model="regDialogForm" ref="regDialogForm" label-width="150px" style="width: 450px;">
+                    <el-form-item label="头像" prop="picAddress">
+                        <el-upload class="avatar-uploader" action="/api/fruit/uploadfile" :show-file-list="false"
+                            :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                            <img v-if="regDialogForm.picAddress" :src="regDialogForm.picAddress" class="avatar">
+                            <i v-else class="el-icon-plus" style="width:100px;height:100px;line-height: 100px;"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item label="登录名" prop="loginName">
+                        <el-input v-model="regDialogForm.loginName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="userPwd">
+                        <el-input type="password" v-model="regDialogForm.userPwd"></el-input>
+                    </el-form-item>
+                    <el-form-item label="昵称" prop="nickname">
+                        <el-input v-model="regDialogForm.nickname"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div class="footer dialog_footer">
+                    <div class="center" style="width: 130px;margin:0 auto">
+                        <el-button size="mini" type="primary" @click="handleRegDialogSubmit">完成</el-button>
+                        <el-button size="mini" @click="closeRegDialog">取消</el-button>
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
+        <el-dialog title="忘记密码" width="600px" :visible.sync="isForgetDialogVisible" :close-on-click-modal="false"
+            @closed="handleForgetDialogClosed" center>
+            <div class="login_forget_dialog">
+                <el-form :model="regDialogForm" ref="regDialogForm" label-width="150px" style="width: 450px;">
+                    <el-form-item label="登录名" prop="loginName">
+                        <el-input v-model="regDialogForm.loginName"></el-input>
+                    </el-form-item>
+                    <!-- <el-form-item label="验证码" prop="loginName">
+                        <el-input v-model="regDialogForm.loginName"></el-input>
+                    </el-form-item> -->
+                </el-form>
+                <div class="footer dialog_footer">
+                    
+                    <div class="center" style="width: 130px;margin:0 auto">
+                        <el-button size="mini" type="primary" @click="handleForgetDialogSubmit">完成</el-button>
+                        <el-button size="mini" @click="closeForgetDialog">取消</el-button>
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
+    </div>
+</body>
+
+</html>

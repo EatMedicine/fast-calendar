@@ -2,14 +2,14 @@
  * @Descripttion: 
  * @Author: CY
  * @Date: 2020-05-27 18:04:33
- * @LastEditTime: 2020-05-27 19:24:51
+ * @LastEditTime: 2020-05-28 14:27:43
 --> 
 <!DOCTYPE html>
 <html lang="zh">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
     <style>
@@ -21,10 +21,81 @@
 
 <body>
     <div id="app" v-cloak >
+        <div id="listAdd" style="position: fixed;right:20px;z-index: 10;">
+            <el-button size="mini" type="primary"  @click="handleNewList">批量新增</el-button>
+        </div>
         <!-- 内容 -->
-        <schedule-calendar :events="events"  @event-click="onEventClick" @date-click="onDateClick" 
+        <schedule-calendar :events="events"  @event-click="onEventClick" @date-click="onDateClick"  @item-delete="onItemDelete"
                             @event-dragend="changeDate" @dblclick="console.log('2333')"></schedule-calendar>
+        <el-dialog :title="'新增Tips ' + currentDate" :visible.sync="isNewDialogVisible" width="300px" @closed="handleDialogClosed">
+            <div style="width: 200px;margin:0 auto">
+                <el-form :model="tipForm" :rules="rules" :inline-message="true" ref="tipForm" id="tipForm">
+                    <el-form-item label="内容" prop="Title" >
+                        <el-input v-model="tipForm.Title" placeholder="请输入显示内容"></el-input>
+                    </el-form-item>
+                    <el-form-item label="标记颜色" prop="TipStatus">
+                        <el-select v-model="tipForm.TipStatus" >
+                            <el-option v-for="item in statusList" :key="item.id" :value="item.id">
+                                <span :style="{color:item.color,float:'left',fontSize:'20px'}">■</span>
+                                <span :style="{color:item.color,float:'right'}">{{item.id}}</span>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="日期范围" prop="TimeRange" v-if="isListNew==true" size="small">
+                        <el-date-picker
+                            v-model="tipForm.TimeRange"
+                            type="daterange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="footer" style="justify-content: center;display: flex;">
+                <el-button type="primary" @click="handleSubmitNew" style="margin: 0 auto;">新增</el-button>
+            </div>
+        </el-dialog>
     </div>
 </body>
-
+<style>
+    #tipForm .el-date-editor--daterange.el-input__inner{
+        width:200px
+    }
+    @media screen and (orientation: portrait) {
+        #listAdd{
+            bottom: 10px;
+        }
+        /* html{
+            width : 100vmin;
+            min-height: 800px;
+            min-width: 700px;
+            height : 100vmax;
+        }
+        body{
+            width : 100vmin;
+            min-height: 800px;
+            min-width: 700px;
+            height : 100vmax;
+        }
+        .schedule-calendar{
+            min-width: 700px;
+        } */
+        /* .el-message-box__content{
+            min-height: 100px;
+        }
+        html{
+            width : 100vmax;
+            min-height: 700px;
+            height : 100vmin;
+            transform-origin: top left;
+            transform: rotate(90deg) translate(0,-700px);
+        } */
+    } 
+    @media screen and (orientation: landscape) {
+        #listAdd{
+            top: 10px;
+        }
+    }
+</style>
 </html>

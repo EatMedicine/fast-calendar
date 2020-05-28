@@ -7,6 +7,7 @@
       <Diagram DiagramId="e1b21e8c96f24d4ea1b49c0b78afcc06" Name="Diagram1">
         <EntityTypeShape EntityType="FastCalendarModel.Tip" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FastCalendarModel.UserLogin" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="FastCalendarModel.FK__Tip__userId__08EA5793" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

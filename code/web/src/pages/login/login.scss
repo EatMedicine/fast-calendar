@@ -1,0 +1,90 @@
+@import "./../../style/color.scss";
+@import "./../../style/global.scss";
+#app::before {
+  background-image: url("./../../../public/loginBackground.jpg");
+  background-position: center center;
+  filter: blur(5px);
+  width: 100%;
+  height: 100%;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+#app{
+    width: 100%;
+    height: 100%;
+}
+#login{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+#login-card{
+    width: 600px;
+    height: 280px;
+    background: $background-color;
+    position: relative;
+}
+#name{
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top:20%;
+    color: $comp-color1;
+    span{
+        font-size: 30px;
+        text-shadow: 3px 3px 6px #000;
+    }
+}
+.form-submit{
+    position: absolute;
+    bottom: 10px;
+    width: calc(100% - 40px);
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+.login_reg_dialog{
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+    }
+    
+    .avatar {
+        width: 100px;
+        height: 100px;
+        display: block;
+    }
+}
+
+.footer {
+    position: absolute;
+    bottom: 0px;
+}
+
+.dialog_footer {
+    margin: 20px;
+    width: 490px;
+}

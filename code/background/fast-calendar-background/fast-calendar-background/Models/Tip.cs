@@ -9,6 +9,7 @@
 
 namespace fast_calendar_background.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -20,5 +21,8 @@ namespace fast_calendar_background.Models
         public int IsShow { get; set; }
         public int IsDisable { get; set; }
         public System.DateTime TipDate { get; set; }
+        public Nullable<int> userId { get; set; }
+        [JsonIgnore]
+        public virtual UserLogin UserLogin { get; set; }
     }
 }

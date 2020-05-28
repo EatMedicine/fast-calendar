@@ -1,3 +1,9 @@
+/*
+ * @Descripttion: 
+ * @Author: CY
+ * @Date: 2020-05-27 18:04:33
+ * @LastEditTime: 2020-05-28 11:14:27
+ */ 
 import axios from 'axios';
 
 axios.create({
@@ -35,7 +41,18 @@ axios.interceptors.response.use(
         console.log("401");
         break;
       case 200:
+      case 201:
+      case 202:
+      case 203:
+      case 204:
+      case 205:
+      case 206:
+      case 207:
+      case 208:
+      case 209:
+      case 210:
         result = res;
+        break;
     }
     //在这里对返回的数据进行处理
     return result;
