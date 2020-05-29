@@ -131,6 +131,9 @@ var vm = new Vue({
         putTip(id){
             return this.$put(`${api.TipDisableUrl}`,{id:id}); 
         },
+        changeTipDate(tip){
+            return this.$put(`${api.TipChangeDateUrl}`,tip);
+        },
         deleteTip(id){
             return this.$delete(`${api.TipUrl}/${id}`);
         },
@@ -168,9 +171,7 @@ var vm = new Vue({
                         })
                         beginDate.setDate(beginDate.getDate()+1)
                     }
-                    debugger
                     this.postTipList(result).then(res=>{
-                        debugger
                         this.$message.success("新增成功");
                         for(let item of res.data){
                             this.events.push(this.setInputData(item));
@@ -194,6 +195,11 @@ var vm = new Vue({
             this.isNewDialogVisible = true;
             this.currentDate = "";
         },
+        handleLogout:function(){
+            delCookie("id");
+            delCookie("name");
+            window.location.href = "login.html";
+        },
         setInputData:function(data){
             let tmp = {
                 id:data.id,
@@ -206,11 +212,38 @@ var vm = new Vue({
             console.log("input",tmp);
             return tmp;
         },
+        setOutputData:function(data){
+            let tmp = {
+                id:data.id,
+                TipDate:data.date,
+                Title:data.text,
+                TipStatus:data.status,
+                IsShow:data.show?1:0,
+                IsDisable:data.disabled?1:0,
+            }
+            return tmp;
+        },
         changeDate(e, item, date) {
-            const updateIndex = this.events.findIndex(ele => ele.id === item.id)
+            if(item==null||date==null||item.date == date){
+                return;
+            }
+            let updateIndex = this.events.findIndex(ele => ele.id === item.id)
+            let orginDate = item.date;
             this.$set(this.events, updateIndex, {
                 ...this.events[updateIndex],
                 date
+            })
+            item.date = date;
+            let tmp = this.setOutputData(item);
+            this.changeTipDate(tmp).then((res)=>{
+                this.$message.success("修改日期成功");
+            }).catch(()=>{
+                this.$message.error("修改日期失败");
+                updateIndex = this.events.findIndex(ele => ele.id === item.id)
+                this.$set(this.events, updateIndex, {
+                    ...this.events[updateIndex],
+                    orginDate
+                })
             })
         },
         onEventClick:function(event,item){

@@ -116,6 +116,28 @@ namespace fast_calendar_background.Controllers
             return Ok(tip);
         }
 
+        // Put: api/Tips/changedate
+        [ResponseType(typeof(Tip))]
+        [Route("api/Tips/changedate")]
+        [HttpPut]
+        public IHttpActionResult changedate(Tip tipObj)
+        {
+            Tip tip = db.Tip.Find(tipObj.id);
+            if (tip == null)
+            {
+                return NotFound();
+            }
+            if (tip.TipDate == null)
+            {
+                return BadRequest();
+            }
+            tip.TipDate = tipObj.TipDate; 
+            db.SaveChanges();
+            return Ok(tip);
+        }
+
+
+
         // DELETE: api/Tips/5
         [ResponseType(typeof(Tip))]
         public IHttpActionResult DeleteTip(int id)

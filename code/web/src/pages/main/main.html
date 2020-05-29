@@ -23,6 +23,7 @@
     <div id="app" v-cloak >
         <div id="listAdd" style="position: fixed;right:20px;z-index: 10;">
             <el-button size="mini" type="primary"  @click="handleNewList">批量新增</el-button>
+            <el-button size="mini"  @click="handleLogout">注销</el-button>
         </div>
         <!-- 内容 -->
         <schedule-calendar :events="events"  @event-click="onEventClick" @date-click="onDateClick"  @item-delete="onItemDelete"

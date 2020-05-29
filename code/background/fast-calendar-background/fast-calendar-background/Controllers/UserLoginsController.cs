@@ -105,10 +105,14 @@ namespace fast_calendar_background.Controllers
         [HttpGet]
         public IHttpActionResult Check([FromUri] string  UserName,[FromUri] string UserPassword)
         {
-            UserLogin user = db.UserLogin.Where(item => item.UserPassword == UserPassword && item.UserName == UserName).FirstOrDefault();
+            UserLogin user = db.UserLogin.Where(item => item.UserName == UserName).FirstOrDefault();
             if (user == null)
             {
                 return NotFound();
+            }
+            if(user.UserPassword != UserPassword)
+            {
+                return BadRequest();
             }
             user.UserPassword = "";
 
