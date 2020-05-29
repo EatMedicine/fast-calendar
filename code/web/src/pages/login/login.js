@@ -61,7 +61,7 @@ var vm = new Vue({
                 this.$message.success("登录成功");
                 setCookie("id",res.data.id,7*24*60);
                 setCookie("name",res.data.UserName,7*24*60);
-                window.location.href = "/main";
+                window.location.href = "/main.html";
             }).catch(()=>{
                 this.$message.error("账号或密码错误");
             })
@@ -123,7 +123,7 @@ var vm = new Vue({
         let id = getCookie("id");
         let name = getCookie("name");
         if(id!==null&&name!==null){
-            window.location.href = "/main";
+            window.location.href = "/main.html";
         }  
     },
     computed: {

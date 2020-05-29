@@ -2,18 +2,19 @@
  * @Descripttion: 
  * @Author: CY
  * @Date: 2020-05-27 18:04:33
- * @LastEditTime: 2020-05-28 11:14:27
+ * @LastEditTime: 2020-05-29 09:07:22
  */ 
 import axios from 'axios';
 
 axios.create({
   timeout: 5000,
+  baseUrl: process.env.VUE_APP_BASE_API,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
   }
 });
 
-axios.defaults.baseURL = process.env.VUE_APP_BASE_API;
+// axios.defaults.baseURL = process.env.VUE_APP_BASE_API;
 
 axios.interceptors.request.use(config => {
     console.log("axios config",config) 

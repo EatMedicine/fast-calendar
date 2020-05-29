@@ -273,7 +273,7 @@ var vm = new Vue({
         this.userId = getCookie("id");
         this.userName = getCookie("name");
         if(this.userId==null||this.userName==null){
-            window.location.href = "login"
+            window.location.href = "login.html"
         }
         this.refreshData();
         setInterval(()=>{
