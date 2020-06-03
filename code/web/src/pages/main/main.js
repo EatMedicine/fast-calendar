@@ -71,16 +71,32 @@ var vm = new Vue({
     data: {
         events: [],
         isMobile:false,
+        pageName:"calendar",
         userId:null,
         userName:null,
         isNewDialogVisible:false,
+        isToDoDialogVisible:false,
         currentDate:"",
+        lastCheckDate:Date.now(),
         isListNew:false,
         tipForm:{
             Title:"",
             TipStatus:null,
             TimeRange:[],
         },
+        toDoForm:{
+            Title:"",
+            IsShow:0,
+            DoDate:null,
+        },
+        todoList:[
+            {id:1,Title:"233333",IsDisable:false,DoDate:"2020-06-03T00:00:00"},
+            {id:2,Title:"23333323",IsDisable:false,DoDate:"2020-06-03T00:00:00"},
+            {id:3,Title:"23333314",IsDisable:false,DoDate:"2020-06-03T00:00:00"},
+            {id:4,Title:"2333335243",IsDisable:true,DoDate:"2020-06-03T00:00:00"},
+            {id:5,Title:"233345633",IsDisable:false,DoDate:"2020-06-03T00:00:00"},
+            {id:6,Title:"23543333",IsDisable:false,DoDate:"2020-06-03T00:00:00"},
+        ],
         statusList:[
             {id:1,color:"#f44336"},
             {id:2,color:"#e91e63"},
@@ -102,16 +118,20 @@ var vm = new Vue({
             ],
             TimeRange:[
                 {required:true,message:"请选择日期范围",trigger:'blur'}
+            ],
+            DoDate:[
+                {required:true,message:"请选择时间",trigger:'blur'}
+
             ]
         }
     },
     methods: {
         refreshData(){
             this.getTipData(this.userId);
+            this.getToDoList(this.userId);
         },
         getTipData(id){
             return this.$get(`${api.TipUrl}/${id}`).then(res=>{
-                console.log("get Tip",res);
                 let data = res.data;
                 let result = [];    
                 for(let tip of data){
@@ -122,8 +142,18 @@ var vm = new Vue({
                 console.log("get Tip Error",err);
             })
         },
+        getToDoList(id){
+            return this.$get(`${api.ToDoListUrl}/${id}`).then(res=>{
+                this.todoList =res.data;
+            }).catch(err=>{
+                console.log("get ToDoList Error",err);
+            })
+        },
         postTip(data){
             return this.$post(`${api.TipUrl}`,data);
+        },
+        postToDo(data){
+            return this.$post(`${api.ToDoListUrl}`,data)
         },
         postTipList(list){
             return this.$post(`${api.TipListUrl}`,list);
@@ -131,11 +161,70 @@ var vm = new Vue({
         putTip(id){
             return this.$put(`${api.TipDisableUrl}`,{id:id}); 
         },
+        putToDoList(id){
+            return this.$put(`${api.ToDoDisableUrl}`,{id:id});
+        },
         changeTipDate(tip){
             return this.$put(`${api.TipChangeDateUrl}`,tip);
         },
         deleteTip(id){
             return this.$delete(`${api.TipUrl}/${id}`);
+        },
+        deleteToDo(id){
+            return this.$delete(`${api.ToDoListUrl}/${id}`);
+        },
+        handleTagDelete:function(tag){
+            let index = this.todoList.findIndex(item=>{
+                return item.id == tag.id;
+            })
+            if(index==-1){
+                return;
+            }
+            this.todoList.splice(index,1);
+            this.deleteToDo(tag.id).then((res)=>{
+                this.$message.success("删除成功");
+                this.$forceUpdate();
+            }).catch(err=>{
+                this.$message.error("删除失败");
+                this.todoList.splice(index,0,tag);
+                this.$forceUpdate();
+            })
+            
+        },
+        handleTagClick:function(tag){
+            if(tag.IsShow==0){
+                this.$message("该日程不提醒");
+                return;
+            }
+            this.$message("提醒【"+tag.Title+"】时间："+tag.DoDate)
+        },
+        handleNewToDo:function(){
+            this.isToDoDialogVisible = true;
+        },
+        handleChangeTodoList:function(){
+            this.pageName = 'todolist';
+            Notification.requestPermission((status)=>{
+                if(status!=='granted'){
+                    console.log("未开启通知权限！！！！");
+                }
+            })
+            this.$forceUpdate();
+        },
+        handleChangeCalendar:function(){
+            this.pageName = 'calendar';
+            this.$forceUpdate();
+        },
+        handleTest:function(){
+            Notification.requestPermission((result)=>{
+            })
+            let notice = new Notification("title",{
+                body:"内容",
+                tag:'notice1'
+            });
+            let notice1 = new Notification("title1",{
+                body:"内容1",
+                tag:'notice1'
+            });
         },
         handleSubmitNew:function(){
             this.$refs['tipForm'].validate(valid=>{
@@ -155,7 +244,6 @@ var vm = new Vue({
                         this.events.push(this.setInputData(res.data));
                     })
                 }else{
-                    console.log(this.tipForm);
                     let data = this.$deepClone(this.tipForm);
                     let beginDate = new Date(this.tipForm.TimeRange[0]);
                     let endDate = new Date(this.tipForm.TimeRange[1]);
@@ -182,6 +270,22 @@ var vm = new Vue({
                 this.isNewDialogVisible = false;
             });
         },
+        handleSubmitNewToDo:function(){
+            this.$refs['toDoForm'].validate(valid=>{
+                if(valid){
+                    let data = this.$deepClone(this.toDoForm);
+                    data.userId = this.userId;
+                    data.IsDisable = 0;
+                    data.DoStatus = 0;
+                    data.DoDate = new Date(data.DoDate);
+                    this.postToDo(data).then(res=>{
+                        this.$message.success("添加成功");
+                        this.refreshData();
+                    })
+                    this.isToDoDialogVisible = false;
+                }
+            })
+        },
         handleDialogClosed:function(){
             this.tipForm = {
                 Title:"",
@@ -189,6 +293,14 @@ var vm = new Vue({
                 TimeRange:[],
             }
             this.$refs['tipForm'].clearValidate();
+        },
+        handleToDoDialogClosed:function(){
+            this.toDoForm = {
+                Title:"",
+                IsShow:0,
+                DoDate:"",
+            }
+            this.$refs['toDoForm'].clearValidate();
         },
         handleNewList:function(){
             this.isListNew = true;
@@ -209,7 +321,6 @@ var vm = new Vue({
                 show:data.IsShow==1?true:false,
                 disabled:data.IsDisable==1?true:false,
             }
-            console.log("input",tmp);
             return tmp;
         },
         setOutputData:function(data){
@@ -256,7 +367,6 @@ var vm = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(()=>{
-                console.log("handle disable",item);
                 item.isDisable = true;
                 item.item.disabled = true;
                 this.putTip(item.item.id).then(res=>{
@@ -275,7 +385,6 @@ var vm = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(()=>{
-                console.log("handle delete",item);
                 let tmp = item.item;
                 this.events.splice(this.events.findIndex((item)=>tmp.id==item.id),1);
                 this.deleteTip(item.item.id).then(res=>{
@@ -314,6 +423,28 @@ var vm = new Vue({
             console.log("Refresh");
         },1000*30)
         console.log("isMobile",isMobile);
+        Notification.requestPermission((status)=>{
+            if(status!=='granted'){
+                console.log("未开启通知权限！！！！");
+            }
+        })
+        setInterval(()=>{
+            let lastTime = this.lastCheckDate;
+            let nowTime = Date.now();
+            for(let tag of this.todoList){
+                if(tag.IsShow==0){
+                    continue;
+                }
+                let tagTime = new Date(tag.DoDate);
+                if(lastTime<tagTime&&tagTime<=nowTime){
+                    new Notification("简易日历提醒",{
+                        body:tag.Title,
+                        tag:"简易日历"+tag.id
+                    })
+                }
+            }
+            this.lastCheckDate = nowTime;
+        },1000*31)
     }
 });
 // [

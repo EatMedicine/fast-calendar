@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: CY
  * @Date: 2020-05-27 18:04:33
- * @LastEditTime: 2020-05-29 11:10:10
+ * @LastEditTime: 2020-06-03 15:56:42
 --> 
 <!DOCTYPE html>
 <html lang="zh">
@@ -22,12 +22,24 @@
 <body>
     <div id="app" v-cloak >
         <div id="listAdd" style="position: fixed;right:20px;z-index: 10;">
-            <el-button size="mini" type="primary"  @click="handleNewList">批量新增</el-button>
+            <el-button size="mini" type="primary"  @click="handleNewList" v-if="pageName == 'calendar'">批量新增</el-button>
+            <el-button size="mini" type="primary"  @click="handleNewToDo" v-if="pageName == 'todolist'">新增日程</el-button>
+            <el-button size="mini" @click="handleChangeTodoList" v-if="pageName == 'calendar'">切换到ToDoList</el-button>
+            <el-button size="mini" @click="handleChangeCalendar" v-if="pageName == 'todolist'">切换到日历</el-button>
             <el-button size="mini"  @click="handleLogout">注销</el-button>
         </div>
+        <div v-show="pageName == 'calendar'" style="height: 100%;">
+            <schedule-calendar :events="events"  @event-click="onEventClick" @date-click="onDateClick"  @item-delete="onItemDelete"
+                                @event-dragend="changeDate" @dblclick="console.log('2333')"></schedule-calendar>
+        </div>
+        <div v-show="pageName == 'todolist'" style="height: 100%;margin-top: -10px;">
+            <div id="todo_drawer" style="padding-top: 60px;">
+                <div v-for="item in todoList" :key="item.id" style="margin:10px 0;text-align: center;">
+                    <el-tag closable @close="handleTagDelete(item)" :disabled="item.IsDisable" @click="handleTagClick(item)">{{item.Title}}</el-tag>
+                </div>
+            </div>
+        </div>
         <!-- 内容 -->
-        <schedule-calendar :events="events"  @event-click="onEventClick" @date-click="onDateClick"  @item-delete="onItemDelete"
-                            @event-dragend="changeDate" @dblclick="console.log('2333')"></schedule-calendar>
         <el-dialog :title="'新增Tips ' + currentDate" :visible.sync="isNewDialogVisible" width="300px" @closed="handleDialogClosed">
             <div style="width: 200px;margin:0 auto">
                 <el-form :model="tipForm" :rules="rules" :inline-message="true" ref="tipForm" id="tipForm">
@@ -54,7 +66,25 @@
                 </el-form>
             </div>
             <div class="footer" style="justify-content: center;display: flex;">
-                <el-button type="primary" @click="handleSubmitNew" style="margin: 0 auto;">新增</el-button>
+                <el-button type="primary" @click="handleSubmitNew" style="margin: 0 auto;">确认</el-button>
+            </div>
+        </el-dialog>
+        <el-dialog title="新增日程" :visible.sync="isToDoDialogVisible" width="300px" @closed="handleToDoDialogClosed">
+            <div style="width: 200px;margin:0 auto">
+                <el-form :model="toDoForm" :rules="rules" ref="toDoForm" :inline-message="true" id="toDoForm"> 
+                    <el-form-item label="内容" prop="Title">
+                        <el-input v-model="toDoForm.Title" placeholder="请输入内容"></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否提醒" prop="isShow">
+                        <el-switch v-model="toDoForm.isShow" :active-value="1" :inactive-value="0"></el-switch>
+                    </el-form-item>
+                    <el-form-item label="提醒时间" prop="DoDate" v-if="toDoForm.isShow==1">
+                        <el-date-picker v-model="toDoForm.DoDate" type="datetime" placeholder="请输入提醒时间" value-format="yyyy-MM-dd HH:mm:ss.000Z"></el-date-picker>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="footer" style="justify-content: center;display: flex;">
+                <el-button type="primary" @click="handleSubmitNewToDo" style="margin: 0 auto;">确认</el-button>
             </div>
         </el-dialog>
     </div>

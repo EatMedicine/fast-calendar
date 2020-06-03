@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="FastCalendarModel.Tip" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FastCalendarModel.UserLogin" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="FastCalendarModel.FK__Tip__userId__08EA5793" />
+        <EntityTypeShape EntityType="FastCalendarModel.ToDoList" Width="1.5" PointX="5" PointY="5" />
+        <AssociationConnector Association="FastCalendarModel.FK__ToDoList__userId__1367E606" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

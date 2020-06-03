@@ -19,6 +19,7 @@ namespace fast_calendar_background.Models
         public UserLogin()
         {
             this.Tip = new HashSet<Tip>();
+            this.ToDoList = new HashSet<ToDoList>();
         }
     
         public int id { get; set; }
@@ -27,5 +28,8 @@ namespace fast_calendar_background.Models
         [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tip> Tip { get; set; }
+        [JsonIgnore]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ToDoList> ToDoList { get; set; }
     }
 }

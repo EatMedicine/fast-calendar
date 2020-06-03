@@ -17,6 +17,18 @@
           <Property Name="IsDisable" Type="int" Nullable="false" />
           <Property Name="TipDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ToDoList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="Title" Type="text" Nullable="false" />
+          <Property Name="DoStatus" Type="int" Nullable="false" />
+          <Property Name="IsShow" Type="int" Nullable="false" />
+          <Property Name="IsDisable" Type="int" Nullable="false" />
+          <Property Name="DoDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserLogin">
           <Key>
             <PropertyRef Name="id" />
@@ -25,7 +37,7 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Tip__userId__08EA5793">
+        <Association Name="FK__Tip__userId__0EA330E9">
           <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="0..1" />
           <End Role="Tip" Type="Self.Tip" Multiplicity="*" />
           <ReferentialConstraint>
@@ -37,12 +49,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__ToDoList__userId__1367E606">
+          <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="0..1" />
+          <End Role="ToDoList" Type="Self.ToDoList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserLogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ToDoList">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FastCalendarModelStoreContainer">
           <EntitySet Name="Tip" EntityType="Self.Tip" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ToDoList" EntityType="Self.ToDoList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Tip__userId__08EA5793" Association="Self.FK__Tip__userId__08EA5793">
+          <AssociationSet Name="FK__Tip__userId__0EA330E9" Association="Self.FK__Tip__userId__0EA330E9">
             <End Role="UserLogin" EntitySet="UserLogin" />
             <End Role="Tip" EntitySet="Tip" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ToDoList__userId__1367E606" Association="Self.FK__ToDoList__userId__1367E606">
+            <End Role="UserLogin" EntitySet="UserLogin" />
+            <End Role="ToDoList" EntitySet="ToDoList" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -70,6 +99,7 @@
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Tip" Relationship="FastCalendarModel.FK__Tip__userId__08EA5793" FromRole="UserLogin" ToRole="Tip" />
+          <NavigationProperty Name="ToDoList" Relationship="FastCalendarModel.FK__ToDoList__userId__1367E606" FromRole="UserLogin" ToRole="ToDoList" />
         </EntityType>
         <EntityContainer Name="FastCalendarEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Tip" EntityType="Self.Tip" />
@@ -77,6 +107,11 @@
           <AssociationSet Name="FK__Tip__userId__08EA5793" Association="FastCalendarModel.FK__Tip__userId__08EA5793">
             <End Role="UserLogin" EntitySet="UserLogin" />
             <End Role="Tip" EntitySet="Tip" />
+          </AssociationSet>
+          <EntitySet Name="ToDoList" EntityType="FastCalendarModel.ToDoList" />
+          <AssociationSet Name="FK__ToDoList__userId__1367E606" Association="FastCalendarModel.FK__ToDoList__userId__1367E606">
+            <End Role="UserLogin" EntitySet="UserLogin" />
+            <End Role="ToDoList" EntitySet="ToDoList" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="FK__Tip__userId__08EA5793">
@@ -87,6 +122,31 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Tip">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ToDoList">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DoStatus" Type="Int32" Nullable="false" />
+          <Property Name="IsShow" Type="Int32" Nullable="false" />
+          <Property Name="IsDisable" Type="Int32" Nullable="false" />
+          <Property Name="DoDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="UserLogin" Relationship="FastCalendarModel.FK__ToDoList__userId__1367E606" FromRole="ToDoList" ToRole="UserLogin" />
+        </EntityType>
+        <Association Name="FK__ToDoList__userId__1367E606">
+          <End Type="FastCalendarModel.UserLogin" Role="UserLogin" Multiplicity="0..1" />
+          <End Type="FastCalendarModel.ToDoList" Role="ToDoList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserLogin">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ToDoList">
               <PropertyRef Name="userId" />
             </Dependent>
           </ReferentialConstraint>
@@ -116,6 +176,19 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ToDoList">
+            <EntityTypeMapping TypeName="FastCalendarModel.ToDoList">
+              <MappingFragment StoreEntitySet="ToDoList">
+                <ScalarProperty Name="DoDate" ColumnName="DoDate" />
+                <ScalarProperty Name="IsDisable" ColumnName="IsDisable" />
+                <ScalarProperty Name="IsShow" ColumnName="IsShow" />
+                <ScalarProperty Name="DoStatus" ColumnName="DoStatus" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

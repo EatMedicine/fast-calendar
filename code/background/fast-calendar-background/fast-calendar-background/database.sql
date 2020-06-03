@@ -37,3 +37,19 @@ CREATE TABLE Tip
 	TipDate DateTime Not Null,--对应日期
 )
 GO	
+
+
+IF EXISTS(SELECT * FROM SYSOBJECTS WHERE name = 'ToDoList')
+DROP TABLE ToDoList
+GO
+CREATE TABLE ToDoList
+(
+	id INT PRIMARY KEY IDENTITY(1, 1),
+	userId INT FOREIGN KEY REFERENCES UserLogin(id),
+	Title Text Not Null,--ToDo内容
+	DoStatus INT Not Null,--状态
+	IsShow INT Not Null,--是否显示
+	IsDisable INT Not Null,--是否完成
+	DoDate DateTime Not Null,--对应日期
+)
+GO	

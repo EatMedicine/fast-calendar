@@ -191,6 +191,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TipsController.cs" />
+    <Compile Include="Controllers\ToDoListsController.cs" />
     <Compile Include="Controllers\UserLoginsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -212,6 +213,9 @@
       <DependentUpon>FastCalendar.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Tip.cs">
+      <DependentUpon>FastCalendar.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ToDoList.cs">
       <DependentUpon>FastCalendar.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserLogin.cs">

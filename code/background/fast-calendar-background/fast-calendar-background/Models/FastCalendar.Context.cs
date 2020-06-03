@@ -27,5 +27,6 @@ namespace fast_calendar_background.Models
     
         public virtual DbSet<Tip> Tip { get; set; }
         public virtual DbSet<UserLogin> UserLogin { get; set; }
+        public virtual DbSet<ToDoList> ToDoList { get; set; }
     }
 }
